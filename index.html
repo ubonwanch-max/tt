@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pH Checker - Modern UI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Prompt', sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .glass-container {
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      padding: 40px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      margin-bottom: 20px;
+      font-size: 18px;
+      outline: none;
+    }
+
+    button {
+      background-color: #ffffff;
+      color: #333;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background-color: #e0e0e0;
+      transform: translateY(-2px);
+    }
+
+    #result {
+      margin-top: 25px;
+      font-size: 18px;
+      padding: 20px;
+      border-radius: 12px;
+      line-height: 1.5;
+    }
+
+    .safe {
+      background-color: rgba(198, 255, 221, 0.3);
+      color: #00ffb3;
+    }
+
+    .warning {
+      background-color: rgba(255, 244, 184, 0.3);
+      color: #ffe066;
+    }
+
+    .danger {
+      background-color: rgba(255, 204, 204, 0.3);
+      color: #ff4e4e;
+    }
+
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      #result {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="glass-container">
+    <h1>ตรวจสอบระดับ pH ของน้ำ</h1>
+    <input type="number" id="phValue" placeholder="เช่น 7.0" step="0.1">
+    <button onclick="checkPH()">ตรวจสอบ</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function checkPH() {
+      const ph = parseFloat(document.getElementById("phValue").value);
+      const result = document.getElementById("result");
+      result.className = "";
+      result.style.display = "block";
+
+      if (isNaN(ph)) {
+        result.textContent = "⚠️ กรุณากรอกค่า pH ให้ถูกต้อง";
+        result.classList.add("danger");
+        return;
+      }
+
+      let message = "";
+
+      if (ph <= 4.0) {
+        message = "☠️ อันตรายมาก! เป็นจุดอันตราย ทำให้ปลาตายได้";
+        result.classList.add("danger");
+      } else if (ph > 4.0 && ph <= 6.0) {
+        message = "⚠️ ไม่อันตรายถึงชีวิต แต่ทำให้ผลผลิตต่ำ การเติบโตและการสืบพันธุ์หยุดชะงัก";
+        result.classList.add("warning");
+      } else if (ph > 6.0 && ph <= 9.0) {
+        message = "✅ ปลอดภัย! ระดับที่เหมาะสมต่อการเพาะเลี้ยงสัตว์น้ำ";
+        result.classList.add("safe");
+      } else if (ph > 9.0 && ph < 11.0) {
+        message = "⚠️ ไม่เหมาะสมต่อการดำรงชีวิตของสัตว์น้ำหากอยู่นาน";
+        result.classList.add("warning");
+      } else if (ph >= 11.0) {
+        message = "☠️ เป็นพิษต่อปลา!";
+        result.classList.add("danger");
+      } else {
+        message = "ไม่สามารถระบุค่า pH นี้ได้";
+        result.classList.add("warning");
+      }
+
+      result.textContent = message;
+    }
+  </script>
+</body>
+</html>
